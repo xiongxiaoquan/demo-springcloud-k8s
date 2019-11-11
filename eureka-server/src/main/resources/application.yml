@@ -21,7 +21,7 @@ eureka:
     registry-fetch-interval-seconds: 5
     serviceUrl:
       defaultZone: ${EUREKA_SERVER:http://127.0.0.1:${server.port}/eureka/}
-    #fetchRegistry: ${BOOL_FETCH:false}
+    fetchRegistry: ${BOOL_FETCH:true}
     register-with-eureka: ${BOOL_REGISTER:true}
   instance:
     # 心跳间隔时间，即发送一次心跳之后，多久在发起下一次（缺省为30s）
@@ -29,7 +29,7 @@ eureka:
     # 在收到一次心跳之后，等待下一次心跳的空档时间，大于心跳间隔即可，即服务续约到期时间（缺省为90s）
     lease-expiration-duration-in-seconds: 10
     #instance-id: ${EUREKA_INSTANCE_HOSTNAME:${spring.application.name}}:${server.port}@${random.long(1000000,9999999)}
-    hostname: ${EUREKA_INSTANCE_HOSTNAME:${spring.application.name}}
+    hostname: ${EUREKA_INSTANCE_HOSTNAME}
     appname: ${spring.application.name}
 
 spring:

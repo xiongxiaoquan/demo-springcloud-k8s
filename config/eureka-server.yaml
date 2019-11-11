@@ -79,9 +79,9 @@ spec:
             - name: BOOL_REGISTER
               value: "true"
             - name: EUREKA_INSTANCE_HOSTNAME
-              value: ${MY_POD_NAME}.eureka
+              value: ${MY_POD_NAME}.${MY_IN_SERVICE_NAME}
             - name: EUREKA_SERVER
-              value: "http://eureka-0.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-1.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-2.eureka-service-internal.default.svc.cluster.local:8761/eureka/"
+              value: "http://eureka-0.eureka-service-internal:8761/eureka/,http://eureka-1.eureka-service-internal:8761/eureka/,http://eureka-2.eureka-service-internal:8761/eureka/"
           image:  eureka:v1
           imagePullPolicy: IfNotPresent
           name: eureka-container
