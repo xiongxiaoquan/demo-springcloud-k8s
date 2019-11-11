@@ -1,0 +1,108 @@
+#ingress
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: eureka-ingress-external
+spec:
+  rules:
+    - host: eureka.demo.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: eureka-service-internal
+              servicePort: 8761
+---
+# headless service
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-service-internal
+  labels:
+    app: eureka-service-internal
+  namespace: default
+spec:
+  clusterIP: None
+  ports:
+    - port: 8761
+      protocol: TCP
+      targetPort: 8761
+  selector:
+    app: eureka
+  type: ClusterIP
+
+---
+# StatefulSet
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: eureka
+spec:
+  selector:
+    matchLabels:
+      app: eureka
+  serviceName: eureka-service-internal
+  replicas: 3
+  podManagementPolicy: "Parallel"
+  template:
+    metadata:
+      labels:
+        app: eureka
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - env:
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: MY_IN_SERVICE_NAME
+              value: eureka-service-internal
+            - name: EUREKA_APPLICATION_NAME
+              value: "eureka"
+            - name: EUREKA_REPLICAS
+              value: "3"
+            - name: BOOL_FETCH
+              value: "true"
+            - name: BOOL_REGISTER
+              value: "true"
+            - name: EUREKA_INSTANCE_HOSTNAME
+              value: ${MY_POD_NAME}.eureka
+            - name: EUREKA_SERVER
+              value: "http://eureka-0.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-1.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-2.eureka-service-internal.default.svc.cluster.local:8761/eureka/"
+          image:  eureka:v1
+          imagePullPolicy: IfNotPresent
+          name: eureka-container
+          ports:
+            - containerPort: 8761
+              protocol: TCP
+#          livenessProbe:
+#            tcpSocket:
+#              port: 8761
+#            initialDelaySeconds: 20
+#            periodSeconds: 10
+#            failureThreshold: 3
+#            successThreshold: 1
+#            timeoutSeconds: 5
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: 8761
+#              scheme: HTTP
+#            initialDelaySeconds: 20
+#            periodSeconds: 10
+#            failureThreshold: 1
+#            successThreshold: 1
+#            timeoutSeconds: 5

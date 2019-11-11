@@ -1,0 +1,37 @@
+#deploy
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-provider
+spec:
+  selector:
+    matchLabels:
+      app: service-provider
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service-provider
+    spec:
+      containers:
+        - name: service-provider
+          image: service-provider:v1
+          ports:
+            - containerPort: 8081
+          env:
+            - name: EUREKA_SERVER
+              value: "http://eureka-0.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-1.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-2.eureka-service-internal.default.svc.cluster.local:8761/eureka/"
+---
+#service
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-provider
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8081
+  selector:
+    app: service-provider
+  type: ClusterIP

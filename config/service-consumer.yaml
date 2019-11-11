@@ -1,0 +1,53 @@
+#deploy
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-consumer
+spec:
+  selector:
+    matchLabels:
+      app: service-consumer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service-consumer
+    spec:
+      containers:
+        - name: service-consumer
+          image: service-consumer:v1
+          ports:
+            - containerPort: 8082
+          env:
+            - name: EUREKA_SERVER
+              value: "http://eureka-0.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-1.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-2.eureka-service-internal.default.svc.cluster.local:8761/eureka/"
+---
+#service
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-consumer
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8082
+  selector:
+    app: service-consumer
+  type: ClusterIP
+
+---
+#ingress
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: service-consumer
+spec:
+  rules:
+    - host: consumer.demo.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: service-consumer
+              servicePort: 80
