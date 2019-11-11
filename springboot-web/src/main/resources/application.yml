@@ -9,3 +9,9 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_SERVER:http://127.0.0.1:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+    # 表示 Eureka Client 向 Eureka Server 发送心跳的频率（默认 30 秒）
+    # 如果在lease-expiration-duration-in-seconds指定的时间内未收到心跳，则移除该实例
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
