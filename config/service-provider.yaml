@@ -22,7 +22,7 @@ spec:
             - name: EUREKA_SERVICE_NAME
               value: eureka-service-internal
             - name: EUREKA_PORT
-              value: 8761
+              value: "8761"
             - name: EUREKA_SERVER
               value: "http://${EUREKA_SERVICE_NAME}:${EUREKA_PORT}/eureka/"
 #            - name: EUREKA_SERVER
