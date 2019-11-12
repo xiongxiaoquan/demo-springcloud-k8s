@@ -74,14 +74,14 @@ spec:
               value: "eureka"
             - name: EUREKA_REPLICAS
               value: "3"
-            - name: BOOL_FETCH
-              value: "true"
-            - name: BOOL_REGISTER
-              value: "true"
-            - name: EUREKA_INSTANCE_HOSTNAME
-              value: ${MY_POD_NAME}.${MY_IN_SERVICE_NAME}.default.svc.cluster.local
-            - name: EUREKA_SERVER
-              value: "http://eureka-0.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-1.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-2.eureka-service-internal.default.svc.cluster.local:8761/eureka/"
+#            - name: BOOL_FETCH
+#              value: "true"
+#            - name: BOOL_REGISTER
+#              value: "true"
+#            - name: EUREKA_INSTANCE_HOSTNAME
+#              value: ${MY_POD_NAME}.${MY_IN_SERVICE_NAME}.default.svc.cluster.local
+#            - name: EUREKA_SERVER
+#              value: "http://eureka-0.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-1.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-2.eureka-service-internal.default.svc.cluster.local:8761/eureka/"
           image:  eureka:v1
           imagePullPolicy: IfNotPresent
           name: eureka-container
