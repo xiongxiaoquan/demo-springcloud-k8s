@@ -8,7 +8,8 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_SERVER:http://127.0.0.1:8761/eureka/}
+      defaultZone: http://eureka-service-internal/eureka/
+      #${EUREKA_SERVER:http://127.0.0.1:8761/eureka/}
   instance:
     prefer-ip-address: true
     # 表示 Eureka Client 向 Eureka Server 发送心跳的频率（默认 30 秒）
