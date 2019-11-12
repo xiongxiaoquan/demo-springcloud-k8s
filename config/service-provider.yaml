@@ -19,12 +19,12 @@ spec:
           ports:
             - containerPort: 8081
           env:
-            - name: EUREKA_APPLICATION_NAME
-              value: "eureka"
-            - name: EUREKA_REPLICAS
-              value: "3"
-            - name: POSTFIX
-              value: "eureka-service-internal.default.svc.cluster.local:8761/eureka/"
+            - name: EUREKA_SERVICE_NAME
+              value: eureka-service-internal
+            - name: EUREKA_PORT
+              value: 8761
+            - name: EUREKA_SERVER
+              value: "http://${EUREKA_SERVICE_NAME}:${EUREKA_PORT}/eureka/"
 #            - name: EUREKA_SERVER
 #              value: "http://eureka-0.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-1.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-2.eureka-service-internal.default.svc.cluster.local:8761/eureka/"
 ---

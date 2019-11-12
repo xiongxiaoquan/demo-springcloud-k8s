@@ -19,8 +19,14 @@ spec:
           ports:
             - containerPort: 8082
           env:
+            - name: EUREKA_SERVICE_NAME
+              value: eureka-service-internal
+            - name: EUREKA_PORT
+              value: 8761
             - name: EUREKA_SERVER
-              value: "http://eureka-0.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-1.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-2.eureka-service-internal.default.svc.cluster.local:8761/eureka/"
+              value: "http://${EUREKA_SERVICE_NAME}:${EUREKA_PORT}/eureka/"
+#            - name: EUREKA_SERVER
+#              value: "http://eureka-0.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-1.eureka-service-internal.default.svc.cluster.local:8761/eureka/,http://eureka-2.eureka-service-internal.default.svc.cluster.local:8761/eureka/"
 ---
 #service
 apiVersion: v1
